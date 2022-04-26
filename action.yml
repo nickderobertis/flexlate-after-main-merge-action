@@ -1,7 +1,7 @@
 name: "Flexlate After-Main Merge Action"
 description: "Official Flexlate Github Action to merge feature Flexlate branches into main Flexlate branches"
 inputs:
-  branch-name:
+  branch_name:
     description: "The name of the base branch that the Flexlate branches were created on"
     required: true
     default: template-patches
@@ -20,14 +20,14 @@ runs:
           echo ::set-output name=exists::false;
         fi;
       env:
-        TEMPLATE_BRANCH_NAME: flexlate-templates-${{ inputs.branch-name }}
+        TEMPLATE_BRANCH_NAME: flexlate-templates-${{ inputs.branch_name }}
       shell: bash
     - name: Merge Flexlate template branch
       if: steps.check_template_branch.outputs.exists == 'true'
       uses: devmasx/merge-branch@1.4.0
       with:
         type: now
-        from_branch: flexlate-templates-${{ inputs.branch-name }}
+        from_branch: flexlate-templates-${{ inputs.branch_name }}
         target_branch: flexlate-templates
         github_token: ${{ github.token }}
     - name: Merge Flexlate output branch
@@ -35,7 +35,7 @@ runs:
       uses: devmasx/merge-branch@1.4.0
       with:
         type: now
-        from_branch: flexlate-output-${{ inputs.branch-name }}
+        from_branch: flexlate-output-${{ inputs.branch_name }}
         target_branch: flexlate-output
         github_token: ${{ github.token }}
     - name: Delete merged Flexlate branches
@@ -43,4 +43,4 @@ runs:
       uses: dawidd6/action-delete-branch@v3
       with:
         github_token: ${{ github.token }}
-        branches: flexlate-templates-${{ inputs.branch-name }},flexlate-output-${{ inputs.branch-name }}
+        branches: flexlate-templates-${{ inputs.branch_name }},flexlate-output-${{ inputs.branch_name }}
