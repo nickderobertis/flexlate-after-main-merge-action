@@ -1,0 +1,8 @@
+name: 'Flexlate After-Main Merge Action'
+description: 'Official Flexlate Github Action to merge feature Flexlate branches into main Flexlate branches'
+runs:
+  using: composite
+  steps:
+    - run: echo hello world
+      shell: bash
+  

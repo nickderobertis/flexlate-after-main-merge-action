@@ -14,7 +14,16 @@
   "applied_templates": [
     {
       "name": "copier-github-actions-semantic-release",
-      "data": {},
+      "data": {
+        "repo_name": "flexlate-after-main-merge-action",
+        "full_name": "Flexlate After-Main Merge Action",
+        "action_type": "composite",
+        "repo_username": "nickderobertis",
+        "short_description": "Official Flexlate Github Action to merge feature Flexlate branches into main Flexlate branches",
+        "package_author": "Nick DeRobertis",
+        "author_email": "derobertis.nick@gmail.com",
+        "main_branch_name": "main"
+      },
       "version": "76a7a08633159a76b303443e43f42f0bb7f09b25",
       "add_mode": "local",
       "root": "."
