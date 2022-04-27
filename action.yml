@@ -1,8 +1,46 @@
-name: 'Flexlate After-Main Merge Action'
-description: 'Official Flexlate Github Action to merge feature Flexlate branches into main Flexlate branches'
+name: "Flexlate After-Main Merge Action"
+description: "Official Flexlate Github Action to merge feature Flexlate branches into main Flexlate branches"
+inputs:
+  branch_name:
+    description: "The name of the base branch that the Flexlate branches were created on"
+    required: true
+    default: template-patches
 runs:
   using: composite
   steps:
-    - run: echo hello world
+    - name: Check whether template branch exists
+      id: check_template_branch
+      run: |
+        echo "TEMPLATE_BRANCH_NAME $TEMPLATE_BRANCH_NAME"
+        if git rev-parse --verify "origin/$TEMPLATE_BRANCH_NAME"; then
+          echo "$TEMPLATE_BRANCH_NAME exists, will merge to master"
+          echo ::set-output name=exists::true;
+        else
+          echo "$TEMPLATE_BRANCH_NAME does not exist, must not be a Flexlate update, exiting"
+          echo ::set-output name=exists::false;
+        fi;
+      env:
+        TEMPLATE_BRANCH_NAME: flexlate-templates-${{ inputs.branch_name }}
       shell: bash
-  
+    - name: Merge Flexlate template branch
+      if: steps.check_template_branch.outputs.exists == 'true'
+      uses: devmasx/merge-branch@1.4.0
+      with:
+        type: now
+        from_branch: flexlate-templates-${{ inputs.branch_name }}
+        target_branch: flexlate-templates
+        github_token: ${{ github.token }}
+    - name: Merge Flexlate output branch
+      if: steps.check_template_branch.outputs.exists == 'true'
+      uses: devmasx/merge-branch@1.4.0
+      with:
+        type: now
+        from_branch: flexlate-output-${{ inputs.branch_name }}
+        target_branch: flexlate-output
+        github_token: ${{ github.token }}
+    - name: Delete merged Flexlate branches
+      if: steps.check_template_branch.outputs.exists == 'true'
+      uses: dawidd6/action-delete-branch@v3
+      with:
+        github_token: ${{ github.token }}
+        branches: flexlate-templates-${{ inputs.branch_name }},flexlate-output-${{ inputs.branch_name }}
