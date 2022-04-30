@@ -20,7 +20,6 @@ jobs:
           git config --global user.email "derobertis.nick@gmail.com"
           git config --global user.name "Nick DeRobertis"
           git push --dry-run --no-verify https://x-access-token:$TOKEN@github.com/nickderobertis/flexlate-after-main-merge-action HEAD:alpha
-          git push --dry-run --no-verify https://x-access-token:$TOKEN@github.com/nickderobertis/flexlate-dev-semantic-release-example HEAD:alpha
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         env:
