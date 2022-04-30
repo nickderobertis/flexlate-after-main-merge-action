@@ -13,8 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Test Git access
+        env:
+          TOKEN: ${{ secrets.gh_token }}
+        run: |
+          git config --global user.email "derobertis.nick@gmail.com"
+          git config --global user.name "Nick DeRobertis"
+          git push --dry-run --no-verify https://x-access-token:$TOKEN@github.com/nickderobertis/flexlate-after-main-merge-action HEAD:main
+          git push --dry-run --no-verify https://x-access-token:$TOKEN@github.com/nickderobertis/flexlate-dev-semantic-release-example HEAD:main
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.gh_token }}
-
